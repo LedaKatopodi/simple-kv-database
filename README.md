@@ -1,6 +1,8 @@
 # simple-kv-database
 The purpose of this project is to create a simple version of a distributed, fault-tolerant, Key-Value (KV) database (or store).
 
+![Tree](/aes/tree.jpeg)
+
 ## 📗 Introduction
 
 A Key-Value Database or Key-Value store is defined as a data storage paradigm designed for storing, retrieving, and managing associative arrays. In general, KV systems treat the data as a single opaque collection, which may have different fields for every record. These implementations often use less memory, and are used extensively in cloud computing. The most common data structure used in this frame include hash tables or dictionaries. The data stored inside the data structures, i.e. inside the dictionary, can be stored and retrieved using a key that uniquely identifies the record.
@@ -26,7 +28,7 @@ Also, please make sure that the following libraries are installed and up-to-date
 
 The KV Store to e created can index data of arbitrary length and arbitrary nesting of the form: `key:value`. In this case, key represents the key of the data that we care to store and value is the payload (or value) of the data that we want to store for that key. The value can also contain a set of `key:value` pairs. The maximum number of instances of the `key:value` -type of values inside a high-level (top) key is referred to as the nesting level; that is the maximum times a value can take the form of a `key:value` pair, e.g. in the form of nested dictionaries.
 
-### Criteria for Data Generation
+### 🥅 Criteria for Data Generation
 
 The following criteria and approaches are taken into account during the data creation step:
 * The randomization in generating the data was the priority of this step. Combina- tions of key names were chosen at random, and the same applies for the number of values in each level, the nesting level of a specific value, the length of a string, and the integer and float values assigned to a certain key.
@@ -38,7 +40,7 @@ The following criteria and approaches are taken into account during the data cre
   1. String values can have up to a specific number of characters (user-defined parameter), but not be an empty string. String values include upper- and lower-case letters, as well as numbers.
   2. Integer and float values were ”tweaked” to make more sense, e.g. age or postal code, although in general the randomization of data was the foremost priority, and the majority of values will not make sense.
 
-### The keyFile.txt auxiliary file
+### 🗒️ The keyFile.txt auxiliary file
 
 A two-column auxiliary file containing the plausible key names (1st column) along with their types (2nd column) is used in order to generate the random data. These key names refer only to low-level key names, not the high-level ones.
 The keyFile.txt is supplied as argument in the python script to generate the random data. The program defaults to the keyFile.txt file already provided, but the user can potentially use their own file.
@@ -56,8 +58,8 @@ A python script was created for the data generation step. The following argument
 The arguments above are supplied by the user, while those having a default value could be omitted; the scripts parses the arguments so that they could be used downstream.
 
 An auxiliary function, *populateKey*, was implemented for the generation of the random data. This function is used to create values and assign them to a specified key. This function takes into account all the factors for generating the data randomly:
-* The number of values to be included per high-level key are selected at random, ranging from 0 (empty set) to m. This hold for all the sub-keys as well.
-* The sub-key names and types are drawn from the keyFile.txt, chosen at random all the while not allowing for duplicated keys in the same level.
+* The number of values to be included per high-level key are selected at random, ranging from 0 (empty set) to m. This holds for all the sub-keys as well.
+* The sub-key names and types are drawn from the *keyFile.txt*, chosen at random all the while not allowing for duplicated keys in the same level.
 * The nesting level of each value is selected at random, ranging from 0 to d for the keys being assigned as values to the high-level key. For each subsequent level of keys, the potential maximum nesting level is decreased by one, and the process is repeated through recursion until all high-level and sub-keys are assigned values or sets of values.
 * The maximum string length for values of type string is selected at random, ranging from 1 to l. The characters -letters or numbers- that will build the string are also chosen at random.
 * The above processes are incorporated until all n keys have been populated.
@@ -66,11 +68,11 @@ The output of the script is written to the *dataToIndex.txt* file, to be used do
 #### How to run:
 
 ```
-python3 createData.py -k {keyFile.txt} 
-					  -n {number of lines of data} 
-					  -l {max string length} 
-					  -m {max keys inside value} 
-					  -d {max nesting level}
+python3 createData.py -k {keyFile.txt}
+		      -n {number of lines of data} 
+		      -l {max string length} 
+		      -m {max keys inside value} 
+		      -d {max nesting level}
 ```
 
 #### Example
@@ -86,3 +88,13 @@ python3 createData.py --help
 ```
 
 **Note**: The -k argument can be omitted. A *keyFile.txt* has been provided with the code, and it has been set to the default. However, if the user wishes to use their own *keyFile.txt* file, that is possible with the -k argument.
+
+## 🌴 Trie Implementation
+
+For the implementation of the KV database, only one Trie structure was used for indexing, querying, and storing the data, for both high-level keys and their sub-keys, and the implementation of the Trie structures was done from scratch. Two different classes were introduced, the **Trie object**, and the auxiliary NewNode object, the latter being responsible for building and extending the Trie structure; therefore, the Trie object relies on the NewNode object. For traversing the Trie structure as well as for querying and modifying purposes, the following functions were defined for the Trie class:
+
+1. `**populate**`: Function used for the creation of new keys -if they don’t already exist- inside the Trie structure, as well as for assigning them their value (payload).
+2. `**query**` =: Function used for traversing the Trie and returning the value assigned to a specific key, if the string provided is a key and/or a value has been assigned to it.
+3. `**delete node**`: Function used for *pseudo-deleting* a specific key. Even if retrieving a certain entry goes beyond the scope of this project, it was considered a more viable and useful solution to pseudo-delete a particular key rather than trim it; that is, the delete node function ”decolorizes” the final nodes that are the ones ”marking” the presence or absence of a key, and also substitutes their value with an empty dictionary.
+4. `**delete**`: A function that utilizes delete node but also deletes (”decolorizes”) all the children nodes of the final node of the specified key, when the relative argument is specified.
+
