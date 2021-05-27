@@ -26,7 +26,7 @@ Also, make sure that the following libraries are installed and up-to-date:
 
 ## 👟 Running
 
-The KV Store to be created can index data of arbitrary length and arbitrary nesting of the form: key:value. In this case, key represents the key of the data that we care to store and value is the payload (or value) of the data that we want to store for that key. The value can also contain a set of key:value pairs. The maximum number of instances of the key:value -type of values inside a high-level (top) key is referred to as the nesting level; that is the maximum times a value can take the form of a key:value pair, e.g. in the form of nested dictionaries.
+The KV Store to be created can index data of arbitrary length and arbitrary nesting of the form: `key:value`. In this case, key represents the key of the data that we care to store and value is the payload (or value) of the data that we want to store for that key. The value can also contain a set of `key:value` pairs. The maximum number of instances of the `key:value`-type of values inside a high-level (top) key is referred to as the nesting level; that is the maximum times a value can take the form of a `key:value` pair, e.g. in the form of nested dictionaries.
 
 ### ⌨️ Random Data Generation
 
