@@ -1,0 +1,13 @@
+name	string
+age	int
+height	float
+weight	float
+address	string
+address_no	int
+city	string
+country	string
+postal_code	int
+profession	string
+subscription	string
+car	string
+plate_number string
