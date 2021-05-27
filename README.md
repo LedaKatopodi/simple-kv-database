@@ -82,7 +82,7 @@ First, we need to start the servers. We will can run the following commands on l
 
 ```
 python3 kvServer.py -a {ip_address}
-					          -p {port}
+	            -p {port}
 
 ```
 
@@ -118,8 +118,8 @@ Then we can move ahead with populating the database and performing queries.
 
 ```
 python3 kvBroker.py -s {serverFile.txt}
-					          -i {dataToIndex.txt}
-					          -k {replication factor}
+	            -i {dataToIndex.txt}
+		    -k {replication factor}
 ```
 
 #### Example
